@@ -1,0 +1,15 @@
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\bin\Debug\net7.0\Semiconductor.exe
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\bin\Debug\net7.0\Semiconductor.deps.json
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\bin\Debug\net7.0\Semiconductor.runtimeconfig.json
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\bin\Debug\net7.0\Semiconductor.dll
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\bin\Debug\net7.0\Semiconductor.pdb
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.csproj.AssemblyReference.cache
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.AssemblyInfoInputs.cache
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.AssemblyInfo.cs
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.csproj.CoreCompileInputs.cache
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.dll
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\refint\Semiconductor.dll
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.pdb
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\Semiconductor.genruntimeconfig.cache
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\net7.0\ref\Semiconductor.dll
