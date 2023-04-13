@@ -7,33 +7,20 @@ using System.Threading.Tasks;
 
 public class Lot
 {
-    string LotID { get; set; } = ""; //Lot 아이디
+    public string LotID { get; set; } = ""; //Lot 아이디
 
-    ArrayList waferList = new ArrayList();
-
-    //List<Wafer> waferList = null;
-
-    //List<Wafer> waferList = new List<Wafer>();
-    //인수 없는 생성자
-    public Lot() { }
+    ArrayList waferList = new ArrayList(); //웨이퍼 리스트
 
     //인수 있는 생성자 
-    public Lot(string LotID, ArrayList waferList)
+    public Lot(string LotID)
     {
         this.LotID = LotID;
-        this.waferList = waferList;
     }
 
     //waferList에 wafer 객체 추가
-    public void addWafer(Wafer w)
+    public void AddWafer(Wafer w)
     {
         waferList.Add(w);
-    }
-
-    //waferList 반환
-    public ArrayList getWaferList()
-    {
-        return waferList;
     }
 
     //waferList i번째 객체 반환

@@ -15,34 +15,30 @@ public class Wafer
     public string FileTimestamp { get; set; } = ""; //검사 시작 시간
     public string ResultTimestamp { get; set; } = ""; //검사 종료 시간
     public string InspectionStationID { get; set; } = ""; //웨이퍼 점검 장비 ID
-    public string SampleType { get; set; } = ""; //검사한게 뭔지 (wafer, glass...??)
+    public string SampleType { get; set; } = ""; 
 
     ArrayList dieList = new ArrayList(); //다이 리스트
     ArrayList defectList = new ArrayList(); //defect 리스트
 
-    //인수 없는 생성자
-    public Wafer() { }
-
     //인수 있는 생성자
-    public Wafer(string WaferID, int Slot, string SampleType, ArrayList dieList)
+    public Wafer(string WaferID, int Slot, string SampleOrientationMarkType, 
+        string OrientationMarkLocation, int SampleSize, string FileTimestamp,
+        string ResultTimestamp, string InspectionStationID, string SampleType)
     {
         this.WaferID = WaferID;
         this.Slot = Slot;
+        this.SampleOrientationMarkType = SampleOrientationMarkType;
+        this.OrientationMarkLocation = OrientationMarkLocation;
+        this.SampleSize = SampleSize;
+        this.FileTimestamp = FileTimestamp;
+        this.ResultTimestamp = ResultTimestamp;
+        this.InspectionStationID = InspectionStationID;
         this.SampleType = SampleType;
-        this.dieList = dieList; // 다이 리스트 생성자???
     }
+    //wafer 디폴트 생성자 만들기
 
     //dieList에 die 객체 추가
-    public void addDie(Die e)
-    {
-        dieList.Add(e);
-    }
-
-    //defectList에 die 객체 추가
-    public void AddDefect(Defect d)
-    {
-        defectList.Add(d);
-    }
+    public void AddDie(Die e) => dieList.Add(e);
 
     //deilist 반환
     public ArrayList GetDieList()
@@ -54,5 +50,20 @@ public class Wafer
     public Die DieAt(int i)
     {
         return dieList[i] as Die;
+    }
+
+    //defectList에 defect 객체 추가
+    public void AddDefect(Defect d) => defectList.Add(d);
+
+    //defectList 반환
+    public ArrayList GetDefectList()
+    {
+        return defectList;
+    }
+
+    //defectList i번째 객체 반환
+    public Defect DefectAt(int i)
+    {
+        return defectList[i] as Defect;
     }
 }

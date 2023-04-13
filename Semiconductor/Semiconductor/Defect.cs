@@ -14,7 +14,7 @@ public class Defect
     public int YINDEX { get; set; } = 0;//결함 있는 다이의 좌표
     public double XREL { get; set; } = 0; //찾은 다이 내의 결함의 x좌표
     public double YREL { get; set; } = 0;//찾은 다이 내의 결함의 x좌표
-
+    //+키 (defect id)
     //인수 있는 생성자
     public Defect(int XINDEX, int YINDEX, double XREL, double YREL)
     {
