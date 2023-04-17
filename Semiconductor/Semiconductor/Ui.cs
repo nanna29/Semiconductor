@@ -8,6 +8,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.SymbolStore;
+using System.ComponentModel;
 
 public class Ui
 {
@@ -15,23 +16,23 @@ public class Ui
     public static void Main(string[] args)
     {
         //문자열 파싱
-        StreamReader sr = new StreamReader("C:\\Users\\itfarm\\Desktop\\NY\\ItFarm\\temp.txt");
+        StreamReader sr = new StreamReader("C:\\Users\\itfarm\\Desktop\\NY\\temp.txt");
         while (sr.Peek() >= 0)
         {
             // 1. 첫 라인을 읽어서 문자열로 변환
             String s = sr.ReadLine().ToString();
             //Console.WriteLine(s);
-            // 2._TIFFCleanup 05fa7900 f libtiff:tif_close.obj 형태로 공백 문자열을 하나로 만들어줌
-            //s = ToBlankMerge(s);
+
+            s = ToBlankMerge(s);
 
             // " " 기준으로 문자열 분리
             String[] s2 = s.Split(" ", StringSplitOptions.None);
 
-            Console.WriteLine(s2[0]);
-            
+            //Console.WriteLine(s2[0]); //키값 출력
+
             foreach (String a in s2)
             {
-               //Console.WriteLine(a);
+               Console.WriteLine(a);
             }
             Wafer wafer = new();
             switch (s2[0])
@@ -63,11 +64,13 @@ public class Ui
 
             for (int i = 0; i < input.Length; i++)
             {
+
+                
                 char code = input[i]; //한글자씩
                 if (code == '"')
-                {
-
-                    continue;
+                {                    
+                    if(code=='"')                       
+                        continue;
                 }
             }
             return result;
