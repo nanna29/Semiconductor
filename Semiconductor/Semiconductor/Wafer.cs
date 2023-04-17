@@ -12,36 +12,27 @@ public class Wafer
     public string SampleOrientationMarkType { get; set; } = ""; //웨이퍼 깎아놓은 모양
     public string OrientationMarkLocation { get; set; } = ""; //웨이퍼 돌아간 각도
     public int SampleSize { get; set; } = 0; //웨이퍼 사이즈
-    public string FileTimestamp { get; set; } = ""; //검사 시작 시간
-    public string ResultTimestamp { get; set; } = ""; //검사 종료 시간
+    public DateTime FileTimestamp { get; set; } //검사 시작 시간
+    public DateTime ResultTimestamp { get; set; } //검사 종료 시간
     public string InspectionStationID { get; set; } = ""; //웨이퍼 점검 장비 ID
     public string SampleType { get; set; } = ""; 
 
-    ArrayList dieList = new ArrayList(); //다이 리스트
-    ArrayList defectList = new ArrayList(); //defect 리스트
+    //ArrayList dieList = new ArrayList(); //다이 리스트
+    //ArrayList defectList = new ArrayList(); //defect 리스트
 
-    //인수 있는 생성자
-    public Wafer(string WaferID, int Slot, string SampleOrientationMarkType, 
-        string OrientationMarkLocation, int SampleSize, string FileTimestamp,
-        string ResultTimestamp, string InspectionStationID, string SampleType)
-    {
-        this.WaferID = WaferID;
-        this.Slot = Slot;
-        this.SampleOrientationMarkType = SampleOrientationMarkType;
-        this.OrientationMarkLocation = OrientationMarkLocation;
-        this.SampleSize = SampleSize;
-        this.FileTimestamp = FileTimestamp;
-        this.ResultTimestamp = ResultTimestamp;
-        this.InspectionStationID = InspectionStationID;
-        this.SampleType = SampleType;
-    }
-    //wafer 디폴트 생성자 만들기
+    List<Die> dieList = new List<Die>();
+    List<Defect> defectList = new List<Defect>();
+
+    //인수 없는 생성자
+    public Wafer() {}
 
     //dieList에 die 객체 추가
-    public void AddDie(Die e) => dieList.Add(e);
+    public void AddDie(Die e) {
+        dieList.Add(e);
+    } 
 
     //deilist 반환
-    public ArrayList GetDieList()
+    public List<Die> GetDieList()
     {
         return dieList;
     }
@@ -53,10 +44,12 @@ public class Wafer
     }
 
     //defectList에 defect 객체 추가
-    public void AddDefect(Defect d) => defectList.Add(d);
+    public void AddDefect(Defect d) {
+        defectList.Add(d);
+    } 
 
     //defectList 반환
-    public ArrayList GetDefectList()
+    public List<Defect> GetDefectList()
     {
         return defectList;
     }
