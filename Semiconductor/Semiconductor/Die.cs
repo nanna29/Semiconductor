@@ -29,6 +29,12 @@ public class Die
     public Die(double XSampleCenterLocation, double YSampleCenterLocation,
         double XDiePitch, double YDiePitch, int XSampleTestPlan, int YSampleTestPlan)
     {
+        this.XSampleCenterLocation = XSampleCenterLocation;
+        this.YSampleCenterLocation = YSampleCenterLocation;
+
+        this.XDiePitch = XDiePitch;
+        this.YDiePitch = YDiePitch;
+
         this.XSampleTestPlan = XSampleTestPlan;
         this.YSampleTestPlan = YSampleTestPlan;
 

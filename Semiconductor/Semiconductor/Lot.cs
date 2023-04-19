@@ -24,6 +24,7 @@ public class Lot
     {
         this.LotID = LotID;
     }
+    public Lot() { }
 
     //waferList에 wafer 객체 추가
     public void AddWafer(Wafer w)

@@ -14,7 +14,6 @@ public class Wafer
     public int SampleSize { get; set; } = 0; //웨이퍼 사이즈
     public DateTime FileTimestamp { get; set; } //검사 시작 시간
     public DateTime ResultTimestamp { get; set; } //검사 종료 시간
-    public string InspectionStationID { get; set; } = ""; //웨이퍼 점검 장비 ID
     public string SampleType { get; set; } = ""; 
 
     //ArrayList dieList = new ArrayList(); //다이 리스트
