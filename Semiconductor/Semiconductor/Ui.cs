@@ -10,22 +10,41 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics.SymbolStore;
 using System.ComponentModel;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection;
 
 public class Ui
 {
-    //read: 한 글자씩 읽기
-    //readline: 한 줄씩 읽기
-
     public static void Main(string[] args)
     {
-        string path = "C:\\Users\\itfarm\\Desktop\\NY\\content(2).txt";
+        string path = "C:\\Users\\itfarm\\Desktop\\NY\\content.txt";
         Ui ui = new Ui();
-        //ui.LotParse(path);
-        //ui.WaferParse(path);
-        DieParse(path);
-        //ui.DefectParse(path);
+        
+        Lot lot = ui.LotParse(path);
+        Wafer wafer = ui.WaferParse(path);
+        
+        //lot에 wafer 객체 추가
+        lot.AddWafer(wafer);
+
+        Dictionary<int, Die> die = ui.DieParse(path);
+        //wafer에 die 추가
+        for (int i = 0; i < die.Count; i++)
+        {
+            wafer.AddDie(die[i]); //die 객체 1~nnn 개까지 추가
+        }
+
+        
+        Dictionary<int, Defect> defect = ui.DefectParse(path);
+        //wafer에 defect 추가
+        for (int k = 0; k < defect.Count; k++)
+        {
+            wafer.AddDefect(defect[k]); //defect 객체 1~nnn 개까지 추가
+        }
+
+        Console.WriteLine(die.Count); //418
+        Console.WriteLine(defect.Count); //234
 
     }
+
     //Lot
     public Lot LotParse(string path)
     {
@@ -39,16 +58,11 @@ public class Ui
             // 첫 라인을 읽어서 문자열로 변환
             string str = rdr.ReadLine();
 
-            //"" 삭제
+            // " 제거
             str = str.Replace("\"", "");
 
             // " " 기준으로 문자열 분리
             string[] strArr = str.Split(" ", StringSplitOptions.None);
-
-            foreach (string a in strArr)
-            {
-                //Console.WriteLine(a);
-            }
 
             switch (strArr[0])
             {
@@ -74,23 +88,17 @@ public class Ui
         }
         rdr.Close();
 
-        //Console.WriteLine(lot.InspectionStationID1);
-        //Console.WriteLine(lot.InspectionStationID2);
-        //Console.WriteLine(lot.InspectionStationID3);
-        //Console.WriteLine(lot.LotID);
-        //Console.WriteLine(lot.SetupID);
-        //Console.WriteLine(lot.StepID);
-
         return lot;
 
     }
+
     //Wafer
+    Wafer wafer = new();
     public Wafer WaferParse(string path)
     {
-        Wafer wafer = new();
-
         //문자열 파싱
         StreamReader rdr = new StreamReader(path);
+
         while (rdr.Peek() >= 0)
         {
             // 첫 라인을 읽어서 문자열로 변환
@@ -152,262 +160,181 @@ public class Ui
 
         rdr.Close();
 
-        /*
-        Console.WriteLine(wafer.SampleType);
-        Console.WriteLine(wafer.ResultTimestamp);
-        Console.WriteLine(wafer.FileTimestamp);
-        Console.WriteLine(wafer.SampleSize);
-        Console.WriteLine(wafer.SampleOrientationMarkType);
-        Console.WriteLine(wafer.OrientationMarkLocation);
-        Console.WriteLine(wafer.WaferID);
-        Console.WriteLine(wafer.Slot);
-        */
-
         return wafer;
     }
+
     //Die
-    public static Die DieParse(string path)
+    public Dictionary<int, Die> DieParse(string path)
     {
+        StreamReader rdr = new StreamReader(path);
+        
+        //다이 객체들 담아줄 dic 생성
+        Dictionary<int, Die> dieDic = new Dictionary<int, Die>();
+
         double XSampleCenterLocation = 0;
         double YSampleCenterLocation = 0;
         double XDiePitch = 0;
         double YDiePitch = 0;
         int XSampleTestPlan = 0;
         int YSampleTestPlan = 0;
-        StreamReader rdr = new StreamReader(path);
-        //Console.WriteLine(rdr.BaseStream.Length);
-        while (rdr.Peek() >= 0)
+
+        for (int i = 0; i < File.ReadAllLines(path).Count(); i++)
         {
-
-
-            Die die1 = new(XSampleCenterLocation, YSampleCenterLocation, XDiePitch,
-                               YDiePitch, XSampleTestPlan, YSampleTestPlan);
-            return die1;
-
-        }
-        
-
-
-        /*  
-    for (int i=0; i< 672; i++)
-    {
-
-        // 1. 첫 라인을 읽어서 문자열로 변환
-        string s = rdr.ReadLine();
-
-        // " " 기준으로 문자열 분리
-        string[] strArr = s.Split(" ", StringSplitOptions.None);
-
-
-        switch (strArr[0])
-        {
-            case "SampleCenterLocation":
-                XSampleCenterLocation = Convert.ToDouble(strArr[1]);
-                YSampleCenterLocation = Convert.ToDouble(strArr[2].Trim(';'));
-                break;
-
-            case "DiePitch":
-                XDiePitch = Convert.ToDouble(strArr[1]);
-                YDiePitch = Convert.ToDouble(strArr[2].Trim(';'));
-                break;
-
-
-            case "SampleTestPlan":
-                int count = Convert.ToInt32(strArr[1]);
-                for (int k = 0; k < count + 1; k++)
-                {
-                    //읽어오기
-                    string tmps = rdr.ReadLine();
-                    //키값 검사해서 다음줄로 내리기
-                    if (strArr[0] == "SampleTestPlan")
-                        i++;
-
-                    int dieIndex = 0;
-                    strArr = tmps.Split(" ", StringSplitOptions.None);
-                    //마지막 다이라면
-                    if (strArr[1].Contains(";"))
-                    {
-                        XSampleTestPlan = Convert.ToInt32(strArr[0]);
-                        YSampleTestPlan = Convert.ToInt32(strArr[1].Trim(';'));
-                        i++;
-                        dieIndex++;
-                        break;
-                    }
-                    //마지막 다이가 아니라면
-                    else
-                    {
-                        XSampleTestPlan = Convert.ToInt32(strArr[0]);
-                        YSampleTestPlan = Convert.ToInt32(strArr[1]);
-
-                        dieIndex++;
-
-                        i++;                          
-                    }
-
-
-
-                    //continue;
-                }                   
-                break;
-
-
-        }
-
-    }
-    rdr.Close();
-    Console.WriteLine(die1.XSampleTestPlan);
-    Console.WriteLine(die1.YSampleTestPlan);
-    Console.WriteLine(die1.BL_X);
-    Console.WriteLine(die1.BL_Y);
-    return die1;
-
-    /*
-    while (rdr.Peek() >= 0)
-    {
-        // 1. 첫 라인을 읽어서 문자열로 변환
-        string s = rdr.ReadLine();
-
-        //s = ToBlankMerge(s);
-
-        // " " 기준으로 문자열 분리
-        string[] strArr = s.Split(" ", StringSplitOptions.None);
-
-        //foreach (string a in strArr)
-        //{
-        //    Console.WriteLine(a);
-        //}
-
-        switch (strArr[0])
-        {
-            case "SampleCenterLocation":
-                XSampleCenterLocation = Convert.ToDouble(strArr[1]);
-                YSampleCenterLocation = Convert.ToDouble(strArr[2].Trim(';'));
-                break;
-
-            case "DiePitch":
-                XDiePitch = Convert.ToDouble(strArr[1]);
-                YDiePitch = Convert.ToDouble(strArr[2].Trim(';'));
-                break;
-
-
-            case "SampleTestPlan":
-                for (int i = 0; i < Convert.ToInt32(strArr[1])+1 ; i++)
-                {
-                    if (strArr[0] == "SampleTestPlan")
-                        continue;
-                    XSampleTestPlan = Convert.ToInt32(strArr[0]);
-                    YSampleTestPlan = Convert.ToInt32(strArr[1]);
-                    Console.WriteLine(XSampleTestPlan+" , "+ YSampleTestPlan);
-
-                    foreach (char code in strArr[1])
-                    {
-                        if (code == ';')
-                            break;
-                    }
-
-
-                }
-                break;
-
-        }
-
-    }
-    rdr.Close();*/
-        //Die die = new(XSampleCenterLocation, YSampleCenterLocation, XDiePitch,
-        //YDiePitch, XSampleTestPlan, YSampleTestPlan);
-
-
-        //Console.WriteLine(XSampleTestPlan + " , " + YSampleTestPlan);
-
-
-        /*
-        Console.WriteLine(die.XSampleCenterLocation); //2340.3730 
-        Console.WriteLine(die.YSampleCenterLocation); // 10264.9974;
-        Console.WriteLine(die.XDiePitch); //2869.9276
-        Console.WriteLine(die.YDiePitch); // 20643.7677;*/
-
-
-    }
-    /*
-    public Defect DefectParse(string path)
-    {
-        Lot lot = new Lot();
-        //string InspectionStationID1 = "";
-        //string InspectionStationID2 = "";
-        //string InspectionStationID3 = "";
-        //string LotID = "";
-        //string SetupID = "";
-        //string StepID = "";
-
-        //문자열 파싱
-        StreamReader rdr = new StreamReader(path);
-        while (rdr.Peek() >= 0)
-        {
-            // 1. 첫 라인을 읽어서 문자열로 변환
+            // 첫 라인을 읽어서 문자열로 변환
             string s = rdr.ReadLine();
-
-            //s = ToBlankMerge(s);
-            s = s.Replace(";", "");
 
             // " " 기준으로 문자열 분리
             string[] strArr = s.Split(" ", StringSplitOptions.None);
 
-            //foreach (string a in strArr)
-            //{
-            //    Console.WriteLine(a);
-            //}
-
             switch (strArr[0])
             {
-                case "InspectionStationID":
-                    lot.InspectionStationID1 = strArr[1];
-                    lot.InspectionStationID2 = strArr[2];
-                    lot.InspectionStationID3 = strArr[3];
+                case "SampleCenterLocation":
+                    XSampleCenterLocation = Convert.ToDouble(strArr[1]);
+                    YSampleCenterLocation = Convert.ToDouble(strArr[2].Trim(';'));
                     break;
 
-                case "LotID":
-                    lot.LotID = strArr[1];
+                case "DiePitch":
+                    XDiePitch = Convert.ToDouble(strArr[1]);
+                    YDiePitch = Convert.ToDouble(strArr[2].Trim(';'));
                     break;
 
-                case "SetupID":
-                    lot.SetupID = strArr[1];
-                    break;
+                
+                case "SampleTestPlan":
+                    int count = Convert.ToInt32(strArr[1]);
+                    for (int k = 0; k < count + 1; k++)
+                    {
+                        //숫자부터 다시 읽어오기
+                        string tmps = rdr.ReadLine();                       
 
-                case "StepID":
-                    lot.StepID = strArr[1];
+                        //x좌표 y좌표 분리
+                        strArr = tmps.Split(" ", StringSplitOptions.None);
+
+                        //마지막 defect (; 있는지 검사 + 반복문 종료)
+                        if (strArr[1].Contains(";"))
+                        {
+                            XSampleTestPlan = Convert.ToInt32(strArr[0]);
+                            YSampleTestPlan = Convert.ToInt32(strArr[1].Trim(';'));
+                            i++;
+
+                            Create();
+                            
+                            break;
+                        }
+                        
+                        //마지막 다이가 아니라면
+                        else
+                        {
+                            XSampleTestPlan = Convert.ToInt32(strArr[0]);
+                            YSampleTestPlan = Convert.ToInt32(strArr[1]);
+
+                            i++;
+
+                            Create();
+                        }
+
+                        void Create()
+                        {
+                            //다이 객체 생성
+                            Die die = new(XSampleCenterLocation, YSampleCenterLocation, XDiePitch,
+                               YDiePitch, XSampleTestPlan, YSampleTestPlan);
+
+                            //dic에 추가 (키는 0부터 시작)
+                            dieDic.Add(k, die);
+                        }
+                        
+                    }
                     break;
             }
         }
         rdr.Close();
 
+        return dieDic;
+    }
+    //Defect
+    public Dictionary<int, Defect> DefectParse(string path)
+    {
+        StreamReader rdr = new StreamReader(path);
 
-        static string ToBlankMerge(string input)
+        //defect 객체 담아줄 dic 생성
+        Dictionary<int, Defect> defectDic = new Dictionary<int, Defect>();
+
+        int DefectRecordSpec = 0;
+        int XREL = 0;
+        int YREL = 0; 
+        double XINDEX = 0; 
+        double YINDEX = 0;
+
+        for (int i = 0; i < File.ReadAllLines(path).Count(); i++)
         {
-            string result = "";
+            // 1. 첫 라인을 읽어서 문자열로 변환
+            string s = rdr.ReadLine();
 
-            for (int i = 0; i < input.Length; i++)
-            {
+            // " " 기준으로 문자열 분리
+            string[] strArr = s.Split(" ", StringSplitOptions.None);
 
+            switch (strArr[0])
+            {               
+                case "DefectList":
+                   
+                    for (int k = 0; k < 234 + 1; k++)
+                    {
+                        //읽어오기
+                        string tmps = rdr.ReadLine().TrimStart();
 
-                char code = input[i]; //한글자씩
-                if (code == '"')
-                {
-                    if (code == '"')
-                        continue;
-                }
+                        strArr = tmps.Split(" ", StringSplitOptions.None);
+
+                        //마지막 다이라면 (; 있는지 검사 + 반복문 종료)
+                        if (strArr[16].Contains(";"))
+                        {
+                            DefectRecordSpec = Convert.ToInt32(strArr[0]);
+                            XREL = Convert.ToInt32(strArr[3]);
+                            YREL = Convert.ToInt32(strArr[4]);
+                            XINDEX = Convert.ToDouble(strArr[5]);
+                            YINDEX = Convert.ToDouble(strArr[6]);
+
+                            i++;
+
+                            Create();
+
+                            break;
+                        }
+
+                        //마지막 다이가 아니라면
+                        else
+                        {
+                            DefectRecordSpec = Convert.ToInt32(strArr[0]);
+                            XREL = Convert.ToInt32(strArr[3]);
+                            YREL = Convert.ToInt32(strArr[4]);
+                            XINDEX = Convert.ToDouble(strArr[5]);
+                            YINDEX = Convert.ToDouble(strArr[6]);
+
+                            i++;
+
+                            Create();
+                        }
+
+                        void Create()
+                        {
+                            foreach (Die a in wafer.GetDieList())
+                            {
+                                if (a.XSampleTestPlan == XREL && a.YSampleTestPlan == YREL)
+                                {
+                                    //die 실제 좌표계 값 가져와서 defect 실제 좌표 처리하기
+                                    Defect defect = new Defect(XREL, YREL, XINDEX, YINDEX, a.BL_X, a.BL_Y);
+                                    defect.DefectRecordSpec = DefectRecordSpec;
+
+                                    defectDic.Add(k, defect);
+                                    
+                                }
+                            }
+                        }
+
+                    }
+                    break;
             }
-            return result;
         }
+        rdr.Close();
 
-
-        Console.WriteLine(lot.LotID);
-        Console.WriteLine(lot.SetupID);
-        Console.WriteLine(lot.StepID);
-        Console.WriteLine(lot.InspectionStationID2);
-
-        return defect;
-    }*/
-
-
-
+        return defectDic;
+    }
 }

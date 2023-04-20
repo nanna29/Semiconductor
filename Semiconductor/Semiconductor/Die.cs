@@ -37,17 +37,30 @@ public class Die
 
         this.XSampleTestPlan = XSampleTestPlan;
         this.YSampleTestPlan = YSampleTestPlan;
+        /*
+    this.BL_X = XSampleCenterLocation + XDiePitch * XSampleTestPlan;
+    this.BL_Y = YSampleCenterLocation + YDiePitch * YSampleTestPlan;
+
+    this.TL_X = XSampleCenterLocation + XDiePitch * XSampleTestPlan;
+    this.TL_Y = YSampleCenterLocation + YDiePitch * (1 + YSampleTestPlan);
+
+    this.TR_X = XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan);
+    this.TR_Y = YSampleCenterLocation + YDiePitch * (1 + YSampleTestPlan);
+
+    this.BR_X = XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan);
+    this.BR_Y = YSampleCenterLocation + YDiePitch * YSampleTestPlan;*/
+
 
         this.BL_X = XSampleCenterLocation + XDiePitch * XSampleTestPlan;
         this.BL_Y = YSampleCenterLocation + YDiePitch * YSampleTestPlan;
 
         this.TL_X = XSampleCenterLocation + XDiePitch * XSampleTestPlan;
-        this.TL_Y = YSampleCenterLocation + YDiePitch * (1 + YSampleTestPlan);
+        this.TL_Y = Math.Truncate((YSampleCenterLocation + YDiePitch * (1 + YSampleTestPlan)) * 10000) / 10000;
 
-        this.TR_X = XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan);
-        this.TR_Y = YSampleCenterLocation + YDiePitch * (1 + YSampleTestPlan);
+        this.TR_X = Math.Truncate((XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan)) * 10000) / 10000;
+        this.TR_Y = Math.Truncate((YSampleCenterLocation + YDiePitch * (1 + YSampleTestPlan)) * 10000) / 10000;
 
-        this.BR_X = XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan);
+        this.BR_X = Math.Truncate((XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan)) * 10000) / 10000;
         this.BR_Y = YSampleCenterLocation + YDiePitch * YSampleTestPlan;
     }
 
