@@ -214,6 +214,7 @@ public class Ui
                         {
                             XSampleTestPlan = Convert.ToInt32(strArr[0]);
                             YSampleTestPlan = Convert.ToInt32(strArr[1].Trim(';'));
+
                             i++;
 
                             Create();
@@ -240,8 +241,7 @@ public class Ui
 
                             //dic에 추가 (키는 0부터 시작)
                             dieDic.Add(k, die);
-                        }
-                        
+                        }                     
                     }
                     break;
             }
@@ -250,6 +250,7 @@ public class Ui
 
         return dieDic;
     }
+    
     //Defect
     public Dictionary<int, Defect> DefectParse(string path)
     {
@@ -264,7 +265,8 @@ public class Ui
         double XINDEX = 0; 
         double YINDEX = 0;
 
-        for (int i = 0; i < File.ReadAllLines(path).Count(); i++)
+        //밑에 summarySpec~eof 4줄 빼주기 (반복문 헛도는거 방지)
+        for (int i = 0;  i < File.ReadAllLines(path).Count()-4; i++)
         {
             // 1. 첫 라인을 읽어서 문자열로 변환
             string s = rdr.ReadLine();
@@ -315,6 +317,7 @@ public class Ui
 
                         void Create()
                         {
+                            
                             foreach (Die a in wafer.GetDieList())
                             {
                                 if (a.XSampleTestPlan == XREL && a.YSampleTestPlan == YREL)
@@ -323,8 +326,8 @@ public class Ui
                                     Defect defect = new Defect(XREL, YREL, XINDEX, YINDEX, a.BL_X, a.BL_Y);
                                     defect.DefectRecordSpec = DefectRecordSpec;
 
-                                    defectDic.Add(k, defect);
-                                    
+                                    //차례로 defectDic에 키값과 저장하기
+                                    defectDic.Add(k, defect);                            
                                 }
                             }
                         }
