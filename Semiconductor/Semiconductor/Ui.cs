@@ -40,9 +40,11 @@ public class Ui
             wafer.AddDefect(defect[k]); //defect 객체 1~nnn 개까지 추가
         }
 
+
+        wafer.Draw();
+
         Console.WriteLine(die.Count); //418
         Console.WriteLine(defect.Count); //234
-
     }
 
     //Lot

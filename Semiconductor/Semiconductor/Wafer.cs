@@ -58,4 +58,10 @@ public class Wafer
     {
         return defectList[i] as Defect;
     }
+
+    //그려보자... 하... 
+    public void Draw()
+    {
+
+    }
 }
