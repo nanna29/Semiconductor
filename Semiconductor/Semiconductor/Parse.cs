@@ -263,11 +263,11 @@ public class Parse
         //defect 객체 담아줄 dic 생성
         Dictionary<int, Defect> defectDic = new Dictionary<int, Defect>();
 
-        int DefectRecordSpec = 0;
-        int XREL = 0;
-        int YREL = 0;
-        double XINDEX = 0;
-        double YINDEX = 0;
+        int DEFECTID = 0;
+        double XREL = 0;
+        double YREL = 0;
+        int XINDEX = 0;
+        int YINDEX = 0;
 
         //밑에 summarySpec~eof 4줄 빼주기 (반복문 헛도는거 방지)
         for (int i = 0; i < File.ReadAllLines(path).Count() - 4; i++)
@@ -292,11 +292,11 @@ public class Parse
                         //마지막 다이라면 (; 있는지 검사 + 반복문 종료)
                         if (strArr[16].Contains(";"))
                         {
-                            DefectRecordSpec = Convert.ToInt32(strArr[0]);
-                            XREL = Convert.ToInt32(strArr[3]);
-                            YREL = Convert.ToInt32(strArr[4]);
-                            XINDEX = Convert.ToDouble(strArr[5]);
-                            YINDEX = Convert.ToDouble(strArr[6]);
+                            DEFECTID = Convert.ToInt32(strArr[0]);
+                            XREL = Convert.ToDouble(strArr[1]);
+                            YREL = Convert.ToDouble(strArr[2]);
+                            XINDEX = Convert.ToInt32(strArr[3]);
+                            YINDEX = Convert.ToInt32(strArr[4]);
 
                             i++;
 
@@ -308,11 +308,11 @@ public class Parse
                         //마지막 다이가 아니라면
                         else
                         {
-                            DefectRecordSpec = Convert.ToInt32(strArr[0]);
-                            XREL = Convert.ToInt32(strArr[3]);
-                            YREL = Convert.ToInt32(strArr[4]);
-                            XINDEX = Convert.ToDouble(strArr[5]);
-                            YINDEX = Convert.ToDouble(strArr[6]);
+                            DEFECTID = Convert.ToInt32(strArr[0]);
+                            XREL = Convert.ToDouble(strArr[1]);
+                            YREL = Convert.ToDouble(strArr[2]);
+                            XINDEX = Convert.ToInt32(strArr[3]);
+                            YINDEX = Convert.ToInt32(strArr[4]);
 
                             i++;
 
@@ -324,11 +324,11 @@ public class Parse
 
                             foreach (Die a in wafer.GetDieList())
                             {
-                                if (a.XSampleTestPlan == XREL && a.YSampleTestPlan == YREL)
+                                if (a.XSampleTestPlan == XINDEX && a.YSampleTestPlan == YINDEX)
                                 {
                                     //die 실제 좌표계 값 가져와서 defect 실제 좌표 처리하기
                                     Defect defect = new Defect(XREL, YREL, XINDEX, YINDEX, a.BL_X, a.BL_Y);
-                                    defect.DefectRecordSpec = DefectRecordSpec;
+                                    defect.DEFECTID = DEFECTID;
 
                                     //차례로 defectDic에 키값과 저장하기
                                     defectDic.Add(k, defect);
