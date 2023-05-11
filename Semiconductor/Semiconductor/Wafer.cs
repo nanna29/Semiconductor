@@ -73,21 +73,32 @@ public class Wafer
         WriteableBitmap writeableBmp = BitmapFactory.New(800, 800);
         writeableBmp.Clear(Colors.White);
         writeableBmp.FillEllipseCentered(400, 400, 400, 400, Colors.Gray);
-        writeableBmp.DrawRectangle(0,4,5,0, Colors.Blue);
 
         foreach (Die die in dieList)
         {
+            /*
             //윈도우 좌표로 변환
             nTL_X = (int)die.TL_X / 250 + 400;
             nTL_Y = -(int)(die.TL_Y / 250 ) + 400;
             nBR_X = (int)die.BR_X / 250 + 400;
             nBR_Y = -(int)(die.BR_Y / 250 ) + 400;
+            */
+
+
+
+            //윈도우 좌표로 변환
+            //만약 음수면 800 더하고 양수면 800뺘개 코딩
+            nTL_X = (int)die.TL_X / 250 +400;
+            nTL_Y = 800 -(int)(die.TL_Y / 250) -400;
+            nBR_X = (int)die.BR_X / 250 +400;
+            nBR_Y = 800 -(int)(die.BR_Y / 250) -400;
+
 
             //추가 좌표이동 X
             writeableBmp.DrawRectangle(nTL_X, nTL_Y, nBR_X, nBR_Y, Colors.Black);
 
             //추가 좌표이동 O (x: -11, Y: +82)
-            writeableBmp.DrawRectangle(nTL_X - (int)die.XDiePitch / 250, nTL_Y + (int)die.YDiePitch / 250, nBR_X - (int)die.XDiePitch / 250, nBR_Y + (int)die.YDiePitch / 250, Colors.Blue);
+            //writeableBmp.DrawRectangle(nTL_X - (int)die.XDiePitch / 250, nTL_Y + (int)die.YDiePitch / 250, nBR_X - (int)die.XDiePitch / 250, nBR_Y + (int)die.YDiePitch / 250, Colors.Blue);
         }
         
 
@@ -99,7 +110,7 @@ public class Wafer
             writeableBmp.DrawRectangle(nTL_X, nTL_Y, nTL_X + 3, nTL_Y + 3, Colors.Orange);
 
             //추가 좌표이동 O (x: -11, Y: +82)
-            writeableBmp.DrawRectangle(nTL_X - 11, nTL_Y + 82, nTL_X - 11 + 3, nTL_Y + 82 + 3, Colors.Red);
+            //writeableBmp.DrawRectangle(nTL_X - 11, nTL_Y + 82, nTL_X - 11 + 3, nTL_Y + 82 + 3, Colors.Red);
         }
 
         //png 파일로 저장하기
@@ -116,6 +127,6 @@ public class Wafer
             }
         }
 
-        CreateThumbnail("result2.png", writeableBmp.Clone());
+        CreateThumbnail("result.png", writeableBmp.Clone());
     }
 }
