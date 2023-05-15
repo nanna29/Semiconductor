@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Semiconductor.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Semiconductor
 {
@@ -21,16 +24,22 @@ namespace Semiconductor
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
         public MainWindow()
         {
             
-
-            Parse ui = new Parse();
-            ui.parse();
-
             InitializeComponent();
+
+            this.DataContext = new ViewModel();
 
 
         }
+
+
     }
+    
+
+
 }
+

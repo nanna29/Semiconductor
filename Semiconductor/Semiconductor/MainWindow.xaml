@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Semiconductor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
+        Title="MainWindow" Height="1000" Width="1000">
 
-    <!--<Window.DataContext>
-        <vm: />
-    </Window.DataContext>-->
-    <Grid>
-        
+    <Grid x:Name="Grid_1">
+        <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Left" Height="38" Margin="151,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />
+        <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Left" Height="38" Margin="21,24,0,0" VerticalAlignment="Top" Width="97"/>
+        <TextBlock Text="{Binding NTL_X}" HorizontalAlignment="Left" Height="37" Margin="21,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113"/>
+        <Image Source="{Binding waferImage, Mode=TwoWay}" Margin="15,133,12,12"/>
     </Grid>
 </Window>

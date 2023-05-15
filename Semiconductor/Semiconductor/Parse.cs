@@ -11,14 +11,16 @@ using System.Diagnostics.SymbolStore;
 using System.ComponentModel;
 //using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Reflection;
+using Semiconductor;
 
 public class Parse
 {
     public Parse() { }
 
-    public void parse()
+    public Wafer parse(string Path)
     {
-        string path = "C:\\Users\\itfarm\\Desktop\\NY\\content.txt";
+        //Path: viewmodel에서 PathText로 받아온 경로
+        string path = Path;
         Parse pasre = new Parse();
 
         Lot lot = pasre.LotParse(path);
@@ -42,11 +44,16 @@ public class Parse
             wafer.AddDefect(defect[k]); //defect 객체 1~nnn 개까지 추가
         }
 
+
         //파싱 후, 그리기 작업
-        wafer.Draw();
+        //wafer.GetCoordinate();
 
         Console.WriteLine(die.Count); //418
-        Console.WriteLine(defect.Count); //234
+        Console.WriteLine(defect.Count); //23
+
+        return wafer;
+
+        
     }
 
     //Lot
@@ -251,6 +258,8 @@ public class Parse
             }
         }
         rdr.Close();
+
+        
 
         return dieDic;
     }
