@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using static System.Net.WebRequestMethods;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Semiconductor
 {
@@ -28,17 +30,13 @@ namespace Semiconductor
 
         public MainWindow()
         {
-            
             InitializeComponent();
-
             this.DataContext = new ViewModel();
-
-
+            
         }
 
-
     }
-    
+
 
 
 }

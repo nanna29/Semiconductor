@@ -45,7 +45,7 @@ public class Parse
         }
 
 
-        //파싱 후, 그리기 작업
+        //파싱 후, 그리기 작업 (view model로 이동해서 주석처리함)
         //wafer.GetCoordinate();
 
         Console.WriteLine(die.Count); //418

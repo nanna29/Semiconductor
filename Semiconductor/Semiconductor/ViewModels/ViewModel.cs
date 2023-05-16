@@ -17,19 +17,14 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Navigation;
+using System.Drawing;
+using Image = System.Windows.Controls.Image;
+
 namespace Semiconductor
 {
-
-
-    
     public class ViewModel : Notifier
     {
-        
-        Grid grid = new Grid();
-        Rectangle rectangle = new Rectangle();
-
-        Wafer wafer = new Wafer();
-
         //파일 선택시, 해당 파일 텍스트 박스에 넣는 코드 (command binding 이용)
 
         //xaml textbox 텍스트 속성 Binding
@@ -45,9 +40,6 @@ namespace Semiconductor
             }
         }
 
-
-
-
         // ButtonCommand 의 인스턴스 속성인 DisplayPathCommand 속성을 선언
         public ButtonCommand DisplayPathCommand { get; private set; }
 
@@ -58,111 +50,55 @@ namespace Semiconductor
             DisplayPathCommand = new ButtonCommand(DisplayPath);
         }
 
-        //파일 열기 동작하는 코드
+
+
+        //xaml 코드 image source 바인딩
+        private WriteableBitmap wBmp;
+        public WriteableBitmap WBmp2
+        {
+            get
+            {
+                return wBmp;
+            }
+            set
+            {
+                wBmp = value;
+                OnPropertyChanged("WBmp2");
+            }
+        }
+
+        //파일 열기 버튼 동작하는 코드
         public void DisplayPath()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             
             if (openFileDialog.ShowDialog() == true)
             {
-                PathText = openFileDialog.FileName;
-                //해당 경로로 데이터 파싱 진행
+                //해당 경로(PathText)로 데이터 파싱 진행
+                PathText = openFileDialog.FileName;              
                 Parse ui = new Parse();
-                Wafer wafer= ui.parse(PathText);
+                //파싱 진행 후, 윈도우 좌표 수정 위해 wafer return 받음
+                //ui.parse() 함수가 wafer 리턴
+                Wafer wafer = ui.parse(PathText);
 
-                coordinate(wafer);     
+                //coordinate 함수: 그려진 WriteableBitmap return 함
+                //WBmp2에 return된 WriteableBitmap 넣어서 값 갱신시킴 (xaml코드에 image source에 바인딩)
+                WBmp2 = coordinate(wafer);
             }
 
         }
 
+        public int nTL_X { get; set; } = 0;
+        public int nTL_Y { get; set; } = 0;
+        public int nBR_X { get; set; } = 0;
+        public int nBR_Y { get; set; } = 0;
 
-        private int nTL_X;
-
-        public int NTL_X
+        //윈도우 좌표계로 전환 + WriteableBitmap 그리는 함수
+        public WriteableBitmap coordinate(Wafer wafer)
         {
-
-            get { return nTL_X; }
-            set
-            {
-                nTL_X = value;
-                OnPropertyChanged("NTL_X");
-            }
-        }
-
-        private int nTL_Y;
-
-        public int NTL_Y
-        {
-            get { return nTL_Y; }
-            set
-            {
-                nTL_Y = value;
-                OnPropertyChanged("NTL_Y");
-            }
-        }
-
-        private int nBR_X;
-
-        public int NBR_X
-        {
-            get { return nBR_X; }
-            set
-            {
-                nBR_X = value;
-                OnPropertyChanged("NBR_X");
-            }
-        }
-
-        private int nBR_Y;
-
-        public int NBR_Y
-        {
-            get { return nBR_Y; }
-            set
-            {
-                nBR_Y = value;
-                OnPropertyChanged("NBR_Y");
-            }
-        }
-
-        public BitmapImage ConvertWriteableBitmapToBitmapImage(WriteableBitmap wbm)
-        {
-            BitmapImage bmImage = new BitmapImage();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(wbm));
-                encoder.Save(stream);
-                bmImage.BeginInit();
-                bmImage.CacheOption = BitmapCacheOption.OnLoad;
-                bmImage.StreamSource = stream;
-                bmImage.EndInit();
-                bmImage.Freeze();
-            }
-            return bmImage;
-        }
-
-        private Image WaferImage;
-        public Image waferImage
-        {
-            get
-            {
-                return WaferImage;
-            }
-            set
-            {
-                WaferImage = value;
-                OnPropertyChanged("waferImage");
-            }
-        }
-
-        public void coordinate(Wafer wafer)
-        {
-
             WriteableBitmap writeableBmp = BitmapFactory.New(800, 800);
             writeableBmp.Clear(Colors.White);
             writeableBmp.FillEllipseCentered(400, 400, 400, 400, Colors.Gray);
-            WaferImage = new Image();
 
             foreach (Die die in wafer.GetDieList())
             {
@@ -171,21 +107,40 @@ namespace Semiconductor
                 nTL_Y = (800 - (int)(die.TL_Y / 250)) - 400 + 82;
                 nBR_X = ((int)die.BR_X / 250) + 400 - 11;
                 nBR_Y = (800 - (int)(die.BR_Y / 250)) - 400 + 82;
-
-
+ 
                 writeableBmp.DrawRectangle(nTL_X, nTL_Y, nBR_X, nBR_Y, Colors.Black);
-                //BitmapImage bitmap = ConvertWriteableBitmapToBitmapImage(writeableBmp);
-                
-                WaferImage.Source = writeableBmp;
             }
 
             foreach (Defect defect in wafer.GetDefectList())
             {
-                //추가 좌표이동 X
+                //윈도우 좌표로 변환
                 nTL_X = (int)defect.BL_X / 250 + 400 - 11;
                 nTL_Y = -(int)defect.BL_Y / 250 + 400 + 82;
 
+                writeableBmp.DrawRectangle(nTL_X, nTL_Y, nTL_X + 3, nTL_Y + 3, Colors.Red);
             }
+
+            
+
+            //png 파일로 저장하기
+            void CreateThumbnail(string filename, BitmapSource image5)
+            {
+                if (filename != string.Empty)
+                {
+                   using (FileStream stream5 = new FileStream(filename, FileMode.Create))
+                   {
+                       PngBitmapEncoder encoder5 = new PngBitmapEncoder();
+                       encoder5.Frames.Add(BitmapFrame.Create(image5));
+                       encoder5.Save(stream5);
+                   }
+                }
+            }
+            CreateThumbnail("result.png", writeableBmp.Clone());
+
+
+
+            //그려진 WriteableBitmap return
+            return writeableBmp;
         }
 
 
