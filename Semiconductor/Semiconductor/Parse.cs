@@ -49,7 +49,7 @@ public class Parse
         //wafer.GetCoordinate();
 
         Console.WriteLine(die.Count); //418
-        Console.WriteLine(defect.Count); //23
+        Console.WriteLine(defect.Count); //234
 
         return wafer;
 
@@ -299,34 +299,42 @@ public class Parse
                         strArr = tmps.Split(new string[] { " " }, StringSplitOptions.None);
 
                         //마지막 다이라면 (; 있는지 검사 + 반복문 종료)
-                        if (strArr[16].Contains(";"))
-                        {
-                            DEFECTID = Convert.ToInt32(strArr[0]);
-                            XREL = Convert.ToDouble(strArr[1]);
-                            YREL = Convert.ToDouble(strArr[2]);
-                            XINDEX = Convert.ToInt32(strArr[3]);
-                            YINDEX = Convert.ToInt32(strArr[4]);
+                        try{
+                            if (strArr[16].Contains(";"))
+                            {
+                                DEFECTID = Convert.ToInt32(strArr[0]);
+                                XREL = Convert.ToDouble(strArr[1]);
+                                YREL = Convert.ToDouble(strArr[2]);
+                                XINDEX = Convert.ToInt32(strArr[3]);
+                                YINDEX = Convert.ToInt32(strArr[4]);
 
-                            i++;
+                                i++;
 
-                            Create();
+                                Create();
 
-                            break;
+                                break;
+                            }
+                            //마지막 다이가 아니라면
+                            else
+                            {
+                                DEFECTID = Convert.ToInt32(strArr[0]);
+                                XREL = Convert.ToDouble(strArr[1]);
+                                YREL = Convert.ToDouble(strArr[2]);
+                                XINDEX = Convert.ToInt32(strArr[3]);
+                                YINDEX = Convert.ToInt32(strArr[4]);
+
+                                i++;
+
+                                Create();
+                            }
                         }
-
-                        //마지막 다이가 아니라면
-                        else
+                        catch(Exception e)
                         {
-                            DEFECTID = Convert.ToInt32(strArr[0]);
-                            XREL = Convert.ToDouble(strArr[1]);
-                            YREL = Convert.ToDouble(strArr[2]);
-                            XINDEX = Convert.ToInt32(strArr[3]);
-                            YINDEX = Convert.ToInt32(strArr[4]);
-
-                            i++;
-
-                            Create();
+                            continue;
                         }
+                        
+
+                        
 
                         void Create()
                         {

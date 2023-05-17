@@ -18,6 +18,9 @@ using System.Windows.Shapes;
 using System.IO;
 using static System.Net.WebRequestMethods;
 using static System.Net.Mime.MediaTypeNames;
+using System.Collections;
+using System.Reflection;
+using System.Data;
 
 namespace Semiconductor
 {
@@ -26,18 +29,15 @@ namespace Semiconductor
     /// </summary>
     public partial class MainWindow : Window
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
+            //바인딩
             this.DataContext = new ViewModel();
-            
         }
-
+       
     }
-
-
-
 }
+    
+
 

@@ -11,7 +11,7 @@
     public double BL_Y { get; set; } = 0; //실제 좌표계에서 Y위치
 
 
-
+    public Defect() { }
     //인수 있는 생성자
     public Defect(double XREL, double YREL, int XINDEX, int YINDEX, double DieBL_X, double DieBL_Y)
     {

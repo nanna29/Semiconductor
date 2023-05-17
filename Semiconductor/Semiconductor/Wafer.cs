@@ -23,14 +23,12 @@ public class Wafer : Notifier
     public DateTime ResultTimestamp { get; set; } //검사 종료 시간
     public string SampleType { get; set; } = "";
 
-    
-    
+    /*
     public int nTL_X { get; set; } = 0;
     public int nTL_Y { get; set; } = 0;
     public int nBR_X { get; set; } = 0;
-    public int nBR_Y { get; set; } = 0;
+    public int nBR_Y { get; set; } = 0;*/
 
-    
 
     List<Die> dieList = new List<Die>();
     List<Defect> defectList = new List<Defect>();

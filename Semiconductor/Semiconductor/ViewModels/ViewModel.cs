@@ -20,6 +20,9 @@ using System.Windows.Shapes;
 using System.Windows.Navigation;
 using System.Drawing;
 using Image = System.Windows.Controls.Image;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Diagnostics;
 
 namespace Semiconductor
 {
@@ -28,7 +31,7 @@ namespace Semiconductor
         //파일 선택시, 해당 파일 텍스트 박스에 넣는 코드 (command binding 이용)
 
         //xaml textbox 텍스트 속성 Binding
-        string pathText;    
+        private string pathText;    
         public string PathText
         {
             get { return pathText; }
@@ -40,26 +43,49 @@ namespace Semiconductor
             }
         }
 
-        // ButtonCommand 의 인스턴스 속성인 DisplayPathCommand 속성을 선언
-        public ButtonCommand DisplayPathCommand { get; private set; }
-
-        // ViewModel 생성자에는 DisplayPathCommand 인스턴스를 ButtonCommand로 할당할 때
-        // 수행할 DisplayPath 함수 입력
-        public ViewModel()
+        //Wafer 정보 바인딩
+        private string waferID;
+        public string WaferID
         {
-            DisplayPathCommand = new ButtonCommand(DisplayPath);
+            get { return waferID; }
+            set
+            {
+                waferID = value;
+                OnPropertyChanged("WaferID");
+
+            }
         }
 
+        private DateTime fileTimestamp;
+        public DateTime FileTimestamp
+        {
+            get { return fileTimestamp; }
+            set
+            {
+                fileTimestamp = value;
+                OnPropertyChanged("FileTimestamp");
 
+            }
+        }
 
-        //xaml 코드 image source 바인딩
+        private DateTime resultTimestamp;
+        public DateTime ResultTimestamp
+        {
+            get { return resultTimestamp; }
+            set
+            {
+                resultTimestamp = value;
+                OnPropertyChanged("ResultTimestamp");
+
+            }
+        }
+
+        //xaml image source 속성 Binding
         private WriteableBitmap wBmp;
         public WriteableBitmap WBmp2
         {
             get
-            {
-                return wBmp;
-            }
+            { return wBmp; }
             set
             {
                 wBmp = value;
@@ -67,7 +93,55 @@ namespace Semiconductor
             }
         }
 
-        //파일 열기 버튼 동작하는 코드
+        // ButtonCommand 의 인스턴스 속성인 DisplayPathCommand 속성을 선언
+        public ButtonCommand DisplayPathCommand { get; private set; }
+
+        // ViewModel 생성자에는 DisplayPathCommand 인스턴스를 ButtonCommand로 할당할 때
+        // 수행할 DisplayPath() 함수 입력
+        public ViewModel()
+        {
+            DisplayPathCommand = new ButtonCommand(DisplayPath);
+
+            /*
+            DieLists = new ObservableCollection<Die>
+            {
+                    new Die
+                    { XSampleCenterLocation =1,
+                        YSampleCenterLocation =1,
+                        XDiePitch =1,
+                        YDiePitch =1,
+                        XSampleTestPlan = 1,
+                        YSampleTestPlan =1
+                    }
+            };*/
+            //AddDie();
+        }
+
+        
+        private List<Die> dieLists;   
+        public List<Die> DieLists
+        {
+            get
+            { return dieLists; }
+            set
+            {
+                dieLists = value;
+                OnPropertyChanged("DieLists");
+            }
+        }
+
+        private List<Defect> defectLists;
+        public List<Defect> DefectLists
+        {
+            get
+            { return defectLists; }
+            set
+            {
+                defectLists = value;
+                OnPropertyChanged("DefectLists");
+            }
+        }
+
         public void DisplayPath()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -81,9 +155,22 @@ namespace Semiconductor
                 //ui.parse() 함수가 wafer 리턴
                 Wafer wafer = ui.parse(PathText);
 
-                //coordinate 함수: 그려진 WriteableBitmap return 함
-                //WBmp2에 return된 WriteableBitmap 넣어서 값 갱신시킴 (xaml코드에 image source에 바인딩)
-                WBmp2 = coordinate(wafer);
+                //Coordinate 함수: 그려진 WriteableBitmap return 함
+                //WBmp2에 Coordinate 에서 return 받은 WriteableBitmap 넣어서 값 갱신시킴 (image source Binding)
+                WBmp2 = Coordinate(wafer);
+
+
+                WaferID = wafer.WaferID;
+                FileTimestamp = wafer.FileTimestamp;
+                ResultTimestamp = wafer.ResultTimestamp;
+
+
+
+
+                DieLists = AddDie(wafer);
+                DefectLists = AddDefect(wafer);
+
+
             }
 
         }
@@ -94,7 +181,7 @@ namespace Semiconductor
         public int nBR_Y { get; set; } = 0;
 
         //윈도우 좌표계로 전환 + WriteableBitmap 그리는 함수
-        public WriteableBitmap coordinate(Wafer wafer)
+        public WriteableBitmap Coordinate(Wafer wafer)
         {
             WriteableBitmap writeableBmp = BitmapFactory.New(800, 800);
             writeableBmp.Clear(Colors.White);
@@ -121,7 +208,7 @@ namespace Semiconductor
             }
 
             
-
+            /*
             //png 파일로 저장하기
             void CreateThumbnail(string filename, BitmapSource image5)
             {
@@ -135,15 +222,58 @@ namespace Semiconductor
                    }
                 }
             }
-            CreateThumbnail("result.png", writeableBmp.Clone());
+            CreateThumbnail("result.png", writeableBmp.Clone());*/
 
 
 
             //그려진 WriteableBitmap return
             return writeableBmp;
         }
+        
+       
 
+        public List<Die> AddDie(Wafer wafer)
+        {
 
+            List<Die> DieLists = new List<Die>();
+            for (int i = 0; i < wafer.GetDieList().Count; i++)
+            {
+                DieLists.Add(new Die
+                {
+
+                    XSampleCenterLocation = wafer.DieAt(i).XSampleCenterLocation,
+                    YSampleCenterLocation = wafer.DieAt(i).YSampleCenterLocation,
+                    XDiePitch = wafer.DieAt(i).XDiePitch,
+                    YDiePitch = wafer.DieAt(i).YDiePitch,
+                    XSampleTestPlan = wafer.DieAt(i).XSampleTestPlan,
+                    YSampleTestPlan = wafer.DieAt(i).YSampleTestPlan
+
+                });
+
+            }
+            return DieLists;
+        }
+
+        public List<Defect> AddDefect(Wafer wafer)
+        {
+
+            List<Defect> DefectLists = new List<Defect>();
+            for (int i = 0; i < wafer.GetDefectList().Count; i++)
+            {
+                DefectLists.Add(new Defect
+                {
+
+                    DEFECTID = wafer.DefectAt(i).DEFECTID,
+                    XREL = wafer.DefectAt(i).XREL,
+                    YREL = wafer.DefectAt(i).YREL,
+                    XINDEX = wafer.DefectAt(i).XINDEX,
+                    YINDEX = wafer.DefectAt(i).YINDEX,
+
+                });
+
+            }
+            return DefectLists;
+        }
 
     }
 }

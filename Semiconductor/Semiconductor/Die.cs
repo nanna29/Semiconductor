@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ public class Die
 
     public double BR_X { get; set; } = 0;
     public double BR_Y { get; set; } = 0;
+
+    public Die() { }
 
     //인수 있는 생성자
     public Die(double XSampleCenterLocation, double YSampleCenterLocation,
@@ -51,9 +54,4 @@ public class Die
         this.BR_X = Math.Truncate((XSampleCenterLocation + XDiePitch * (1 + XSampleTestPlan)) * 10000) / 10000;
         this.BR_Y = Math.Truncate((YSampleCenterLocation + YDiePitch * YSampleTestPlan) * 10000) / 10000; 
     }
-
-
-
-    
-
 }

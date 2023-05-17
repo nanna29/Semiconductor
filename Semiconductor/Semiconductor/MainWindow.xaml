@@ -5,11 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Semiconductor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="750">
+        Title="MainWindow" Height="750" Width="1300">
 
-    <Grid x:Name="Grid_1">
+    <Grid Margin="0,10,0,0">
         <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Left" Height="38" Margin="151,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />
         <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Left" Height="38" Margin="21,24,0,0" VerticalAlignment="Top" Width="97"/>
-        <Image Source="{Binding WBmp2}" Margin="12,88,12,12"/>
+
+        <Border Name="border" Background="White" ClipToBounds="True" Margin="0,140,0,0">
+            <Image Name="image" Source="{Binding WBmp2}" Margin="8,0,672,12" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" />
+
+        </Border>
+
+        <Grid x:Name="grid" HorizontalAlignment="Left" Height="109" Margin="1000,24,0,0" VerticalAlignment="Top" Width="232">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Grid.Column="0">WaferID :</TextBox>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WaferID}"></TextBox>
+
+            <TextBox Grid.Row="1" Grid.Column="0">FileTimestamp :</TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FileTimestamp}" TextWrapping="WrapWithOverflow"></TextBox>
+
+            <TextBox Grid.Row="2" Grid.Column="0">ResultTimestamp :</TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ResultTimestamp}" TextWrapping="WrapWithOverflow"></TextBox>
+        </Grid>
+
+
+        <DataGrid HorizontalAlignment="Left" Height="177" Margin="650,202,0,0" VerticalAlignment="Top" Width="616" 
+                  ItemsSource="{Binding DieLists}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding XSampleTestPlan}" Header="XSampleTestPlan"/>
+                <DataGridTextColumn Binding="{Binding YSampleTestPlan}" Header="YSampleTestPlan"/>
+                <DataGridTextColumn Binding="{Binding XSampleCenterLocation}" Header="XSampleCenterLocation"/>
+                <DataGridTextColumn Binding="{Binding YSampleCenterLocation}" Header="YSampleCenterLocation"/>
+                <DataGridTextColumn Binding="{Binding XDiePitch}" Header="XDiePitch"/>
+                <DataGridTextColumn Binding="{Binding YDiePitch}" Header="YDiePitch"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid HorizontalAlignment="Left" Height="164" Margin="650,432,0,0" VerticalAlignment="Top" Width="616" 
+                  ItemsSource="{Binding DefectLists}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding DEFECTID}" Header="DEFECTID"/>
+                <DataGridTextColumn Binding="{Binding XREL}" Header="XREL"/>
+                <DataGridTextColumn Binding="{Binding YREL}" Header="YREL"/>
+                <DataGridTextColumn Binding="{Binding XINDEX}" Header="XINDEX"/>
+                <DataGridTextColumn Binding="{Binding YINDEX}" Header="YINDEX"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <CheckBox Content="표 가리기" HorizontalAlignment="Left" Height="24" Margin="26,75,0,0" VerticalAlignment="Top" Width="92"/>
+        <TextBlock HorizontalAlignment="Left" Height="19" Margin="650,408,0,0" TextWrapping="Wrap" Text="Defect Info" VerticalAlignment="Top" Width="62"/>
+        <TextBlock HorizontalAlignment="Left" Height="19" Margin="650,178,0,0" TextWrapping="Wrap" Text="Die Info" VerticalAlignment="Top" Width="62"/>
+
     </Grid>
 </Window>
