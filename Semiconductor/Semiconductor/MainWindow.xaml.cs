@@ -21,6 +21,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Collections;
 using System.Reflection;
 using System.Data;
+using System.ComponentModel;
 
 namespace Semiconductor
 {
@@ -32,11 +33,15 @@ namespace Semiconductor
         public MainWindow()
         {
             InitializeComponent();
-            //바인딩
             this.DataContext = new ViewModel();
         }
-       
     }
+
+
+
+
+
+   
 }
     
 

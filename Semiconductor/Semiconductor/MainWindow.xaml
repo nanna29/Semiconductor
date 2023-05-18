@@ -5,18 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Semiconductor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1300">
+        Title="Wafer" Height="750" Width="1300">
+
+    <Window.Resources>
+        <local:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    </Window.Resources>
+
 
     <Grid Margin="0,10,0,0">
+
+
         <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Left" Height="38" Margin="151,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />
         <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Left" Height="38" Margin="21,24,0,0" VerticalAlignment="Top" Width="97"/>
 
-        <Border Name="border" Background="White" ClipToBounds="True" Margin="0,140,0,0">
-            <Image Name="image" Source="{Binding WBmp2}" Margin="8,0,672,12" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" />
 
-        </Border>
-
-        <Grid x:Name="grid" HorizontalAlignment="Left" Height="109" Margin="1000,24,0,0" VerticalAlignment="Top" Width="232">
+        <!--웨이퍼 ID, 생산 시간 보여주는 grid-->
+        <Grid x:Name="grid" Height="109" Margin="0,24,68,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="232">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -27,49 +31,73 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0" Grid.Column="0">WaferID :</TextBox>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WaferID}"></TextBox>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding WaferID}" Margin="0,0,-25,0"></TextBox>
 
             <TextBox Grid.Row="1" Grid.Column="0">FileTimestamp :</TextBox>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FileTimestamp}" TextWrapping="WrapWithOverflow"></TextBox>
+            <TextBox Grid.Column="1" Text="{Binding FileTimestamp}" TextWrapping="WrapWithOverflow" Margin="0,36,-25,36" Grid.RowSpan="3"/>
 
             <TextBox Grid.Row="2" Grid.Column="0">ResultTimestamp :</TextBox>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ResultTimestamp}" TextWrapping="WrapWithOverflow"></TextBox>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ResultTimestamp}" TextWrapping="WrapWithOverflow" Margin="0,0,-25,0"></TextBox>
         </Grid>
 
 
-        <DataGrid HorizontalAlignment="Left" Height="177" Margin="650,202,0,0" VerticalAlignment="Top" Width="616" 
+        <!--/////////////////////////////////////////////////////////-->
+        
+        
+        <!--datagrid-->
+        <Grid x:Name="grid2" HorizontalAlignment="Left" Height="531" Margin="26,166,0,0" VerticalAlignment="Top" Width="1264">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Grid.Column="0" Name="image" Source="{Binding WBmp2}" Margin="0,0,672,0" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" />
+
+
+            <Grid Grid.Row="0" Grid.Column="0" Visibility="{Binding ElementName=VisibleCheck, Path=IsChecked, Converter={StaticResource VisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <!--다이 리스트-->
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="678,50,0,0" TextWrapping="Wrap" Text="Die Info" VerticalAlignment="Top" Width="62"/>
+                <DataGrid x:Name="DieGrid" Height="177" Margin="0,74,22,0" VerticalAlignment="Top" 
                   ItemsSource="{Binding DieLists}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding XSampleTestPlan}" Header="XSampleTestPlan"/>
-                <DataGridTextColumn Binding="{Binding YSampleTestPlan}" Header="YSampleTestPlan"/>
-                <DataGridTextColumn Binding="{Binding XSampleCenterLocation}" Header="XSampleCenterLocation"/>
-                <DataGridTextColumn Binding="{Binding YSampleCenterLocation}" Header="YSampleCenterLocation"/>
-                <DataGridTextColumn Binding="{Binding XDiePitch}" Header="XDiePitch"/>
-                <DataGridTextColumn Binding="{Binding YDiePitch}" Header="YDiePitch"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                  CanUserAddRows="False" HorizontalAlignment="Right" Width="564">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding XSampleTestPlan}" Header="XSampleTestPlan"/>
+                        <DataGridTextColumn Binding="{Binding YSampleTestPlan}" Header="YSampleTestPlan"/>
+                        <DataGridTextColumn Binding="{Binding XSampleCenterLocation}" Header="XSampleCenterLocation"/>
+                        <DataGridTextColumn Binding="{Binding YSampleCenterLocation}" Header="YSampleCenterLocation"/>
+                        <DataGridTextColumn Binding="{Binding XDiePitch}" Header="XDiePitch"/>
+                        <DataGridTextColumn Binding="{Binding YDiePitch}" Header="YDiePitch"/>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-        <DataGrid HorizontalAlignment="Left" Height="164" Margin="650,432,0,0" VerticalAlignment="Top" Width="616" 
+                <!--디펙 리스트-->
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="678,314,0,0" TextWrapping="Wrap" Text="Defect Info" VerticalAlignment="Top" Width="62"/>
+                <DataGrid Height="164" Margin="0,338,22,0" VerticalAlignment="Top" 
                   ItemsSource="{Binding DefectLists}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DEFECTID}" Header="DEFECTID"/>
-                <DataGridTextColumn Binding="{Binding XREL}" Header="XREL"/>
-                <DataGridTextColumn Binding="{Binding YREL}" Header="YREL"/>
-                <DataGridTextColumn Binding="{Binding XINDEX}" Header="XINDEX"/>
-                <DataGridTextColumn Binding="{Binding YINDEX}" Header="YINDEX"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <CheckBox Content="표 가리기" HorizontalAlignment="Left" Height="24" Margin="26,75,0,0" VerticalAlignment="Top" Width="92"/>
-        <TextBlock HorizontalAlignment="Left" Height="19" Margin="650,408,0,0" TextWrapping="Wrap" Text="Defect Info" VerticalAlignment="Top" Width="62"/>
-        <TextBlock HorizontalAlignment="Left" Height="19" Margin="650,178,0,0" TextWrapping="Wrap" Text="Die Info" VerticalAlignment="Top" Width="62"/>
+                  CanUserAddRows="False" HorizontalAlignment="Right" Width="564">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding DEFECTID}" Header="DEFECTID"/>
+                        <DataGridTextColumn Binding="{Binding XREL}" Header="XREL"/>
+                        <DataGridTextColumn Binding="{Binding YREL}" Header="YREL"/>
+                        <DataGridTextColumn Binding="{Binding XINDEX}" Header="XINDEX"/>
+                        <DataGridTextColumn Binding="{Binding YINDEX}" Header="YINDEX"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
 
+        <CheckBox x:Name="VisibleCheck" Content="표 가리기" HorizontalAlignment="Left" Height="24" Margin="26,75,0,0" VerticalAlignment="Top" Width="92"/>
     </Grid>
 </Window>

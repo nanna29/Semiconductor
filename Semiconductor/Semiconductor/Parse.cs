@@ -128,23 +128,43 @@ public class Parse
                     break;
 
                 case "ResultTimestamp":
-                    //2003이 아니라 03이라 오류발생, 20붙임
-                    string[] temp = strArr[1].Split(new string[] { "-" }, StringSplitOptions.None);
-                    temp[2] = "20" + temp[2];
-                    strArr[1] = temp[0] + "-" + temp[1] + "-" + temp[2] + " " + strArr[2];
+                    strArr[1] = strArr[1] + " " + strArr[2];
+                    Boolean result1 = DateTime.TryParse(strArr[1], out DateTime tempDate2);
+                    if (result1)
+                    {
+                        wafer.ResultTimestamp = tempDate2;
+                    }
+                    //2003 에서 20빠진 경우
+                    else
+                    {
+                        string[] temp2 = strArr[1].Split(new string[] { "-" }, StringSplitOptions.None);
+                        temp2[2] = "20" + temp2[2];
+                        strArr[1] = temp2[0] + "-" + temp2[1] + "-" + temp2[2];
 
-                    DateTime.TryParse(strArr[1], out DateTime tempDate);
-                    wafer.ResultTimestamp = tempDate;
+                        DateTime.TryParse(strArr[1], out DateTime tempDate3);
+                        wafer.ResultTimestamp = tempDate3;
+                    }
                     break;
 
-                case "FileTimestamp":
-                    //2003이 아니라 03이라 오류발생, 20붙임
-                    string[] temp2 = strArr[1].Split(new string[] { "-" }, StringSplitOptions.None);
-                    temp2[2] = "20" + temp2[2];
-                    strArr[1] = temp2[0] + "-" + temp2[1] + "-" + temp2[2] + " " + strArr[2];
 
-                    DateTime.TryParse(strArr[1], out DateTime tempDate2);
-                    wafer.FileTimestamp = tempDate2;
+
+                case "FileTimestamp":
+                    strArr[1] = strArr[1] + " " + strArr[2];
+                    Boolean result = DateTime.TryParse(strArr[1], out DateTime tempDate4);
+                    if (result)
+                    {              
+                        wafer.FileTimestamp = tempDate4;
+                    }
+                    //2003 에서 20빠진 경우
+                    else
+                    {
+                        string[] temp2 = strArr[1].Split(new string[] { "-" }, StringSplitOptions.None);
+                        temp2[2] = "20" + temp2[2];
+                        strArr[1] = temp2[0] + "-" + temp2[1] + "-" + temp2[2];
+
+                        DateTime.TryParse(strArr[1], out DateTime tempDate5);
+                        wafer.FileTimestamp = tempDate5;
+                    }           
                     break;
 
                 case "SampleSize":
@@ -278,8 +298,8 @@ public class Parse
         int XINDEX = 0;
         int YINDEX = 0;
 
-        //밑에 summarySpec~eof 4줄 빼주기 (반복문 헛도는거 방지)
-        for (int i = 0; i < File.ReadAllLines(path).Count() - 4; i++)
+        Boolean result = true;
+        while (result)
         {
             // 1. 첫 라인을 읽어서 문자열로 변환
             string s = rdr.ReadLine();
@@ -290,8 +310,7 @@ public class Parse
             switch (strArr[0])
             {
                 case "DefectList":
-
-                    for (int k = 0; k < 234 + 1; k++)
+                    for (int k = 0; k < File.ReadAllLines(path).Count(); k++)
                     {
                         //읽어오기
                         string tmps = rdr.ReadLine().TrimStart();
@@ -299,7 +318,8 @@ public class Parse
                         strArr = tmps.Split(new string[] { " " }, StringSplitOptions.None);
 
                         //마지막 다이라면 (; 있는지 검사 + 반복문 종료)
-                        try{
+                        try
+                        {
                             if (strArr[16].Contains(";"))
                             {
                                 DEFECTID = Convert.ToInt32(strArr[0]);
@@ -308,10 +328,9 @@ public class Parse
                                 XINDEX = Convert.ToInt32(strArr[3]);
                                 YINDEX = Convert.ToInt32(strArr[4]);
 
-                                i++;
-
                                 Create();
 
+                                result = false;
                                 break;
                             }
                             //마지막 다이가 아니라면
@@ -323,22 +342,27 @@ public class Parse
                                 XINDEX = Convert.ToInt32(strArr[3]);
                                 YINDEX = Convert.ToInt32(strArr[4]);
 
-                                i++;
-
                                 Create();
                             }
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
-                            continue;
-                        }
-                        
+                            if (strArr[1].Contains(";"))
+                            {
+                                result = false;
+                                break;
+                            }
+                            else
+                            {
+                                k--;
+                                continue;
+                                
+                            }
 
-                        
+                        }
 
                         void Create()
                         {
-
                             foreach (Die a in wafer.GetDieList())
                             {
                                 if (a.XSampleTestPlan == XINDEX && a.YSampleTestPlan == YINDEX)
@@ -358,6 +382,7 @@ public class Parse
             }
         }
         rdr.Close();
+        
 
         return defectDic;
     }

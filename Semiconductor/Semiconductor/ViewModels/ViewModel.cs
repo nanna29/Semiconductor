@@ -2,27 +2,8 @@
 using Semiconductor.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using System.Xml.Serialization;
-using Microsoft.Win32;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Runtime.InteropServices;
-using System.Collections;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using System.Windows.Navigation;
-using System.Drawing;
-using Image = System.Windows.Controls.Image;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics;
 
 namespace Semiconductor
 {
@@ -101,23 +82,9 @@ namespace Semiconductor
         public ViewModel()
         {
             DisplayPathCommand = new ButtonCommand(DisplayPath);
-
-            /*
-            DieLists = new ObservableCollection<Die>
-            {
-                    new Die
-                    { XSampleCenterLocation =1,
-                        YSampleCenterLocation =1,
-                        XDiePitch =1,
-                        YDiePitch =1,
-                        XSampleTestPlan = 1,
-                        YSampleTestPlan =1
-                    }
-            };*/
-            //AddDie();
         }
 
-        
+        //datagird binding 시킬 리스트
         private List<Die> dieLists;   
         public List<Die> DieLists
         {
@@ -130,6 +97,7 @@ namespace Semiconductor
             }
         }
 
+        //datagird binding 시킬 리스트
         private List<Defect> defectLists;
         public List<Defect> DefectLists
         {
@@ -143,7 +111,7 @@ namespace Semiconductor
         }
 
         public void DisplayPath()
-        {
+         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             
             if (openFileDialog.ShowDialog() == true)
@@ -166,7 +134,7 @@ namespace Semiconductor
 
 
 
-
+                //리스트 return
                 DieLists = AddDie(wafer);
                 DefectLists = AddDefect(wafer);
 
@@ -174,7 +142,6 @@ namespace Semiconductor
             }
 
         }
-
         public int nTL_X { get; set; } = 0;
         public int nTL_Y { get; set; } = 0;
         public int nBR_X { get; set; } = 0;
@@ -187,13 +154,17 @@ namespace Semiconductor
             writeableBmp.Clear(Colors.White);
             writeableBmp.FillEllipseCentered(400, 400, 400, 400, Colors.Gray);
 
+            //보정 좌표 계산 (0,0 다이 기준)
+            int XDiepitch = (int)wafer.DieAt(0).XDiePitch / (wafer.SampleSize * 1000 / 800);
+            int YDiepitch = (int)wafer.DieAt(0).YDiePitch / (wafer.SampleSize * 1000 / 800);
+
             foreach (Die die in wafer.GetDieList())
             {
                 //윈도우 좌표로 변환
-                nTL_X = ((int)die.TL_X / 250) + 400 - 11;
-                nTL_Y = (800 - (int)(die.TL_Y / 250)) - 400 + 82;
-                nBR_X = ((int)die.BR_X / 250) + 400 - 11;
-                nBR_Y = (800 - (int)(die.BR_Y / 250)) - 400 + 82;
+                nTL_X = ((int)die.TL_X / 250) + 400 - XDiepitch;
+                nTL_Y = (800 - (int)(die.TL_Y / 250)) - 400 + YDiepitch;
+                nBR_X = ((int)die.BR_X / 250) + 400 - XDiepitch;
+                nBR_Y = (800 - (int)(die.BR_Y / 250)) - 400 + YDiepitch;
  
                 writeableBmp.DrawRectangle(nTL_X, nTL_Y, nBR_X, nBR_Y, Colors.Black);
             }
@@ -201,8 +172,8 @@ namespace Semiconductor
             foreach (Defect defect in wafer.GetDefectList())
             {
                 //윈도우 좌표로 변환
-                nTL_X = (int)defect.BL_X / 250 + 400 - 11;
-                nTL_Y = -(int)defect.BL_Y / 250 + 400 + 82;
+                nTL_X = (int)defect.BL_X / 250 + 400- XDiepitch;
+                nTL_Y = -(int)defect.BL_Y / 250 + 400 + YDiepitch;
 
                 writeableBmp.DrawRectangle(nTL_X, nTL_Y, nTL_X + 3, nTL_Y + 3, Colors.Red);
             }
@@ -231,7 +202,7 @@ namespace Semiconductor
         }
         
        
-
+        //datagrid에 die info 전달위한 리스트 작성
         public List<Die> AddDie(Wafer wafer)
         {
 
@@ -254,6 +225,7 @@ namespace Semiconductor
             return DieLists;
         }
 
+        //datagrid에 defect info 전달위한 리스트 작성
         public List<Defect> AddDefect(Wafer wafer)
         {
 
@@ -274,6 +246,9 @@ namespace Semiconductor
             }
             return DefectLists;
         }
+
+
+
 
     }
 }
