@@ -42,10 +42,10 @@
 
 
         <!--/////////////////////////////////////////////////////////-->
-        
-        
+
+
         <!--datagrid-->
-        <Grid x:Name="grid2" HorizontalAlignment="Left" Height="531" Margin="26,166,0,0" VerticalAlignment="Top" Width="1264">
+        <Grid x:Name="grid2" HorizontalAlignment="Center" Height="558" Margin="0,166,0,0" VerticalAlignment="Top" Width="1300">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
@@ -53,7 +53,7 @@
                 <RowDefinition/>
 
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Grid.Column="0" Name="image" Source="{Binding WBmp2}" Margin="0,0,672,0" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" />
+            <Image Grid.Row="0" Grid.Column="0" Name="image" Source="{Binding WBmp2}" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" HorizontalAlignment="Left" Width="616" Margin="42,0,0,34" />
 
 
             <Grid Grid.Row="0" Grid.Column="0" Visibility="{Binding ElementName=VisibleCheck, Path=IsChecked, Converter={StaticResource VisibilityConverter}}">
@@ -63,12 +63,12 @@
 
                 <!--다이 리스트-->
                 <TextBlock HorizontalAlignment="Left" Height="19" Margin="678,50,0,0" TextWrapping="Wrap" Text="Die Info" VerticalAlignment="Top" Width="62"/>
-                <DataGrid x:Name="DieGrid" Height="177" Margin="0,74,22,0" VerticalAlignment="Top" 
+                <DataGrid x:Name="DieGrid" Height="177" Margin="0,74,36,0" VerticalAlignment="Top" 
                   ItemsSource="{Binding DieLists}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False" HorizontalAlignment="Right" Width="564">
+                  CanUserAddRows="False" HorizontalAlignment="Right" Width="586">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding XSampleTestPlan}" Header="XSampleTestPlan"/>
                         <DataGridTextColumn Binding="{Binding YSampleTestPlan}" Header="YSampleTestPlan"/>
@@ -81,12 +81,12 @@
 
                 <!--디펙 리스트-->
                 <TextBlock HorizontalAlignment="Left" Height="19" Margin="678,314,0,0" TextWrapping="Wrap" Text="Defect Info" VerticalAlignment="Top" Width="62"/>
-                <DataGrid Height="164" Margin="0,338,22,0" VerticalAlignment="Top" 
+                <DataGrid Height="164" Margin="0,338,36,0" VerticalAlignment="Top" 
                   ItemsSource="{Binding DefectLists}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False" HorizontalAlignment="Right" Width="564">
+                  CanUserAddRows="False" HorizontalAlignment="Right" Width="586">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding DEFECTID}" Header="DEFECTID"/>
                         <DataGridTextColumn Binding="{Binding XREL}" Header="XREL"/>

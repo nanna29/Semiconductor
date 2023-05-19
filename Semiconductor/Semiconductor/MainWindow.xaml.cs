@@ -36,11 +36,6 @@ namespace Semiconductor
             this.DataContext = new ViewModel();
         }
     }
-
-
-
-
-
    
 }
     

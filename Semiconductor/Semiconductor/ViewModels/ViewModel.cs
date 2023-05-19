@@ -127,18 +127,14 @@ namespace Semiconductor
                 //WBmp2에 Coordinate 에서 return 받은 WriteableBitmap 넣어서 값 갱신시킴 (image source Binding)
                 WBmp2 = Coordinate(wafer);
 
-
+                //wafer info return
                 WaferID = wafer.WaferID;
                 FileTimestamp = wafer.FileTimestamp;
                 ResultTimestamp = wafer.ResultTimestamp;
 
-
-
                 //리스트 return
                 DieLists = AddDie(wafer);
                 DefectLists = AddDefect(wafer);
-
-
             }
 
         }
