@@ -12,7 +12,7 @@
     </Window.Resources>
 
 
-    <Grid Margin="0,10,0,0">
+    <Grid Margin="0,0,0,0">
 
 
         <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Left" Height="38" Margin="151,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />

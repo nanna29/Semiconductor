@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using System.Runtime.CompilerServices;
-using System.Diagnostics.SymbolStore;
-using System.ComponentModel;
-//using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Reflection;
-using Semiconductor;
 
 public class Parse
 {
