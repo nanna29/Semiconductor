@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Wafer : Notifier
+public class Wafer
 {
     public string WaferID { get; set; } = ""; //웨이퍼 아이디
     public int Slot { get; set; } = 0; //몇번째 슬롯인지
@@ -13,15 +13,8 @@ public class Wafer : Notifier
     public DateTime ResultTimestamp { get; set; } //검사 종료 시간
     public string SampleType { get; set; } = "";
 
-    /*
-    public int nTL_X { get; set; } = 0;
-    public int nTL_Y { get; set; } = 0;
-    public int nBR_X { get; set; } = 0;
-    public int nBR_Y { get; set; } = 0;*/
-
-
-    List<Die> dieList = new List<Die>();
-    List<Defect> defectList = new List<Defect>();
+    public List<Die> dieList = new List<Die>();
+    public List<Defect> defectList = new List<Defect>();
 
     //인수 없는 생성자
     public Wafer() {}

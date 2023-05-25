@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Semiconductor;
+using System;
 
 public class Die
 {

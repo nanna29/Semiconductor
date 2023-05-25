@@ -1,4 +1,6 @@
-﻿public class Defect
+﻿using Semiconductor;
+
+public class Defect
 {
     public int DEFECTID { get; set; } = 0; //defect id
 

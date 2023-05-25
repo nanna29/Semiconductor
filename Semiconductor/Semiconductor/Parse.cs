@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 public class Parse
 {
@@ -26,7 +26,6 @@ public class Parse
             wafer.AddDie(die[i]); //die 객체 1~nnn 개까지 추가
         }
 
-
         Dictionary<int, Defect> defect = pasre.DefectParse(path);
         //wafer에 defect 추가
         for (int k = 0; k < defect.Count; k++)
@@ -34,16 +33,13 @@ public class Parse
             wafer.AddDefect(defect[k]); //defect 객체 1~nnn 개까지 추가
         }
 
-
-        //파싱 후, 그리기 작업 (view model로 이동해서 주석처리함)
+        //파싱 후, 그리기 작업 (view model로 이동해서 주석 처리함)
         //wafer.GetCoordinate();
 
         Console.WriteLine(die.Count); //418
         Console.WriteLine(defect.Count); //234
 
         return wafer;
-
-        
     }
 
     //Lot
@@ -124,7 +120,7 @@ public class Parse
                     {
                         wafer.ResultTimestamp = tempDate2;
                     }
-                    //2003 에서 20빠진 경우
+                    //"2003" 에서 "20" 빠진 경우
                     else
                     {
                         string[] temp2 = strArr[1].Split(new string[] { "-" }, StringSplitOptions.None);
@@ -135,8 +131,6 @@ public class Parse
                         wafer.ResultTimestamp = tempDate3;
                     }
                     break;
-
-
 
                 case "FileTimestamp":
                     strArr[1] = strArr[1] + " " + strArr[2];
@@ -320,6 +314,7 @@ public class Parse
 
                                 Create();
 
+                                //반복문 종료
                                 result = false;
                                 break;
                             }
@@ -339,11 +334,13 @@ public class Parse
                         {
                             if (strArr[1].Contains(";"))
                             {
+                                //반복문 종료
                                 result = false;
                                 break;
                             }
                             else
                             {
+                                //defect dic 형성 안할때는 k-- : key값 달라짐
                                 k--;
                                 continue;
                                 
