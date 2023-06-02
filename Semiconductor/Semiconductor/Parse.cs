@@ -33,7 +33,7 @@ public class Parse
             wafer.AddDefect(defect[k]); //defect 객체 1~nnn 개까지 추가
         }
 
-        //파싱 후, 그리기 작업 (view model로 이동해서 주석 처리함)
+        //파싱 후, 그리기 작업 (ViewModel.cs 로 이동해서 주석 처리함)
         //wafer.GetCoordinate();
 
         Console.WriteLine(die.Count); //418

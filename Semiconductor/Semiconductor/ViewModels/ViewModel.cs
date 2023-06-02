@@ -86,7 +86,6 @@ namespace Semiconductor
             }
         }
 
-
         // ButtonCommand 의 인스턴스 속성인 DisplayPathCommand 속성을 선언
         public ButtonCommand DisplayPathCommand { get; private set; }
 
@@ -239,8 +238,12 @@ namespace Semiconductor
         //datagrid에 defect info 전달위한 리스트 작성
         public List<Defect> AddDefect(Wafer wafer)
         {
-
             List<Defect> DefectLists = new List<Defect>();
+
+            //보정 좌표 계산 (0,0 다이 기준)
+            int XDiepitch = (int)wafer.DieAt(0).XDiePitch / (wafer.SampleSize * 1000 / 800);
+            int YDiepitch = (int)wafer.DieAt(0).YDiePitch / (wafer.SampleSize * 1000 / 800);
+            
             for (int i = 0; i < wafer.GetDefectList().Count; i++)
             {
                 DefectLists.Add(new Defect
@@ -250,17 +253,13 @@ namespace Semiconductor
                     YREL = wafer.DefectAt(i).YREL,
                     XINDEX = wafer.DefectAt(i).XINDEX,
                     YINDEX = wafer.DefectAt(i).YINDEX,
-                    BL_X = wafer.DefectAt(i).BL_X,
-                    BL_Y = wafer.DefectAt(i).BL_Y
+                    BL_X = ((int)wafer.DefectAt(i).BL_X / 250) + 400 - XDiepitch,
+                    BL_Y = -(int)wafer.DefectAt(i).BL_Y / 250 + 400 + YDiepitch
 
                 });
-
             }
             return DefectLists;
         }
-
-
-
 
     }
 }
