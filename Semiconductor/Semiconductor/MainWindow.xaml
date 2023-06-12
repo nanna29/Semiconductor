@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Semiconductor"
         mc:Ignorable="d"
-        Title="WMS" Height="750" Width="1300">
+        Title="WMS" Height="750" Width="1300"
+        Background="{StaticResource background}">
 
     <Window.Resources>
         <local:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
@@ -14,10 +15,9 @@
 
 
     <Grid Margin="0,0,0,0">
-
-        <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Left" Height="38" Margin="151,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />
-        <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Left" Height="38" Margin="21,24,0,0" VerticalAlignment="Top" Width="97"/>
-        <CheckBox x:Name="VisibleCheck" Content="이미지만 보기" HorizontalAlignment="Left" Height="24" Margin="488,31,0,0" VerticalAlignment="Top" Width="110"/>
+        <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Right" Height="38" Margin="0,24,812,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />
+        <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Right" Height="38" Margin="0,24,1154,0" VerticalAlignment="Top" Width="97"/>
+        <CheckBox x:Name="VisibleCheck" Content="이미지만 보기" HorizontalAlignment="Right" Height="24" Margin="0,31,676,0" VerticalAlignment="Top" Width="110"/>
         <Image Name="image" Source="{Binding WBmp2}" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" HorizontalAlignment="Right"
                Width="646"    
                Margin="{Binding ElementName=VisibleCheck, Path=IsChecked, Converter={StaticResource ImageConverter}}"/>

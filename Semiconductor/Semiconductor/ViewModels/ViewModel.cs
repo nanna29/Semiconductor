@@ -161,7 +161,7 @@ namespace Semiconductor
         public WriteableBitmap Coordinate(Wafer wafer)
         {
             WriteableBitmap writeableBmp = BitmapFactory.New(800, 800);
-            writeableBmp.Clear(Colors.White);
+            writeableBmp.Clear(Colors.AliceBlue);
             writeableBmp.FillEllipseCentered(400, 400, 400, 400, Colors.Gray);
 
             //보정 좌표 계산 (0,0 다이 기준)

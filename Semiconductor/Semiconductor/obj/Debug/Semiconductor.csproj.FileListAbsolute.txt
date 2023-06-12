@@ -20,3 +20,4 @@ C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\Semicond
 C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\Semiconductor.pdb
 C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\bin\Debug\System.Windows.Forms.VisualStudio.15.0.dll
 C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\itfarm\Desktop\NY\ItFarm\Semiconductor\Semiconductor\obj\Debug\App.baml
