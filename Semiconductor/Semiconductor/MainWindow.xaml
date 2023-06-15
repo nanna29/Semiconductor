@@ -16,8 +16,23 @@
 
     <Grid Margin="0,0,0,0">
         <TextBox x:Name="txt" Text="{Binding PathText}" HorizontalAlignment="Right" Height="38" Margin="0,24,812,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" />
-        <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Right" Height="38" Margin="0,24,1154,0" VerticalAlignment="Top" Width="97"/>
-        <CheckBox x:Name="VisibleCheck" Content="이미지만 보기" HorizontalAlignment="Right" Height="24" Margin="0,31,676,0" VerticalAlignment="Top" Width="110"/>
+        <Button Content="파일 선택" Command="{Binding DisplayPathCommand}" CommandParameter="{Binding ElementName=txt, Path=Text}"  HorizontalAlignment="Right" Height="38" Margin="0,24,1143,0" VerticalAlignment="Top" Width="114">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse Fill="#AA000000" Margin="10,10,0,-10"/>
+                        <Ellipse Fill="{TemplateBinding Background}" Margin="0,0,10,0"/>
+                        <Viewbox Margin="5,10,15,10">
+                            <ContentPresenter/>
+                        </Viewbox>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
+
+        <CheckBox x:Name="VisibleCheck" Content="이미지만 보기" HorizontalAlignment="Right" Height="38" Margin="0,24,676,0" VerticalAlignment="Top" Width="110"/>
         <Image Name="image" Source="{Binding WBmp2}" Opacity="1" RenderTransformOrigin="0.5,0.5" ClipToBounds="True" HorizontalAlignment="Right"
                Width="646"    
                Margin="{Binding ElementName=VisibleCheck, Path=IsChecked, Converter={StaticResource ImageConverter}}"/>

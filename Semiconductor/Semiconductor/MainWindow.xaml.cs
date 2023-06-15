@@ -13,12 +13,6 @@ namespace Semiconductor
             InitializeComponent();
             this.DataContext = new ViewModel();
         }
-        /*
-        private void VisibleCheck_Checked(object sender, RoutedEventArgs e)
-        {
-            image.Width = 800;
-            image.Height = 1000;
-        }*/
     }
    
 }
